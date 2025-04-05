@@ -4,7 +4,7 @@
  * Date: 4/5/2025
  * Description: Database object for application database.
  */
-package com.example.gymlog.Database;
+package com.example.gymlog.database;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,7 +15,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.gymlog.Database.entities.GymLog;
+import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.MainActivity;
 
 import java.util.concurrent.ExecutorService;

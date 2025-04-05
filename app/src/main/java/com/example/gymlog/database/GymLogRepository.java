@@ -4,12 +4,12 @@
  * Date: 4/5/2025
  * Description:
  */
-package com.example.gymlog.Database;
+package com.example.gymlog.database;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.example.gymlog.Database.entities.GymLog;
+import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.MainActivity;
 
 import java.util.ArrayList;
