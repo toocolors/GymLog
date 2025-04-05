@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 "Exercise:%s%nWeight:%.2f%nReps:%d%n=-=-=-=-=%n%s",
                 mExercise, mWeight, mReps, currentInfo);
         binding.logDisplayTextView.setText(newDisplay);
+        Log.i(TAG, repository.getAllLogs().toString());
     }
 
 }
