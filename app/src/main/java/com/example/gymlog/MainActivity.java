@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
      * Inserts a new GymLog into the repository.
      */
     private void insertGymLogRecord() {
+        if(mExercise.isEmpty()) {
+            return;
+        }
         GymLog log = new GymLog(mExercise, mWeight, mReps);
         repository.insertGymLog(log);
     }
