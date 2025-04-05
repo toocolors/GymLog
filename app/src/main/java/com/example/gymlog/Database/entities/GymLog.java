@@ -9,10 +9,12 @@ package com.example.gymlog.Database.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.gymlog.Database.GymLogDatabase;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity(tableName = "gymLog")
+@Entity(tableName = GymLogDatabase.gymLogTable)
 public class GymLog {
 
     // Fields
