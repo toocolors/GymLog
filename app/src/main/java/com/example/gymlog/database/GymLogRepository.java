@@ -18,13 +18,36 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class GymLogRepository {
+    // Fields
     private GymLogDAO gymLogDAO;
     private ArrayList<GymLog> allLogs;
 
-    public GymLogRepository(Application application) {
+    private static GymLogRepository repository;
+
+    // Constructors
+    private GymLogRepository(Application application) {
         GymLogDatabase db = GymLogDatabase.getDatabase(application);
         this.gymLogDAO = db.gymLogDAO();
         this.allLogs = (ArrayList<GymLog>) this.gymLogDAO.getAllRecords();
+    }
+
+    // Methods
+    public static GymLogRepository getRepository(Application application) {
+        Future<GymLogRepository> future = GymLogDatabase.databaseWriteExecutor.submit(
+                new Callable<GymLogRepository>() {
+                    @Override
+                    public GymLogRepository call() throws Exception {
+                        repository =  new GymLogRepository(application);
+                        return repository;
+                    }
+                }
+        );
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.d(MainActivity.TAG, "Problem getting GymLogRepository, thread error.");
+        }
+        return null;
     }
 
     public ArrayList<GymLog> getAllLogs() {

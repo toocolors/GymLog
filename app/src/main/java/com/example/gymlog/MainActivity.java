@@ -12,16 +12,21 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.gymlog.database.GymLogRepository;
+import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.databinding.ActivityMainBinding;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     // Fields
-    ActivityMainBinding binding;
+
+    private ActivityMainBinding binding;
+
+    private GymLogRepository repository;
 
     public static final String TAG = "NSD_GYMLOG";
     String mExercise = "";
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get repository instance
+        repository = GymLogRepository.getRepository(getApplication());
+
         // Add scrolling to logDisplayTextView
         binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
 
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay();
+                insertGymLogRecord();
                 updateDisplay();
             }
         });
@@ -71,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Error reading value from repEditText");
         }
 
+    }
+
+    /**
+     * Inserts a new GymLog into the repository.
+     */
+    private void insertGymLogRecord() {
+        GymLog log = new GymLog(mExercise, mWeight, mReps);
+        repository.insertGymLog(log);
     }
 
     /**
