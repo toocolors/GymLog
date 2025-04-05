@@ -13,7 +13,7 @@ import androidx.room.Query;
 
 import com.example.gymlog.Database.entities.GymLog;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Dao
 public interface GymLogDAO {
@@ -21,6 +21,6 @@ public interface GymLogDAO {
     void insert(GymLog gymLog);
 
     @Query("SELECT * FROM " + GymLogDatabase.GYM_LOG_TABLE)
-    List<GymLog> getAllRecords();
+    ArrayList<GymLog> getAllRecords();
 
 }

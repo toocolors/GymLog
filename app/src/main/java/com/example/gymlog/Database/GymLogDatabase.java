@@ -58,4 +58,6 @@ public abstract class GymLogDatabase extends RoomDatabase {
             //TODO: add databaseWriteExecutor.execute(() -> {...}
         }
     };
+
+    public abstract GymLogDAO gymLogDAO();
 }
