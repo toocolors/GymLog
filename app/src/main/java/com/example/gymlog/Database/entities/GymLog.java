@@ -11,6 +11,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity(tableName = "gymLog")
 public class GymLog {
@@ -27,6 +28,14 @@ public class GymLog {
 
 
     // Methods
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        GymLog gymLog = (GymLog) o;
+        return id == gymLog.id && Double.compare(weight, gymLog.weight) == 0 && reps == gymLog.reps && Objects.equals(exercise, gymLog.exercise) && Objects.equals(date, gymLog.date);
+    }
 
     public int getId() {
         return id;
@@ -46,6 +55,11 @@ public class GymLog {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, exercise, weight, reps, date);
     }
 
     public void setId(int id) {
