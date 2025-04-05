@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
+
+        // Set UpdateDisplay Shortcut
+        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDisplay();
+            }
+        });
     }
 
     // Methods
