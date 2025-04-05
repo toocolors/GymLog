@@ -2,7 +2,7 @@
  * Description: User.java
  * @author Noah deFer
  * Date: 4/5/2025
- * Description:
+ * Description: A POGO that stores user data.
  */
 package com.example.gymlog.database.entities;
 
