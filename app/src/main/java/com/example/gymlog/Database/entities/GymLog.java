@@ -14,7 +14,7 @@ import com.example.gymlog.Database.GymLogDatabase;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity(tableName = GymLogDatabase.gymLogTable)
+@Entity(tableName = GymLogDatabase.GYM_LOG_TABLE)
 public class GymLog {
 
     // Fields

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     // Fields
     ActivityMainBinding binding;
 
-    private static final String TAG = "NSD_GYMLOG";
+    public static final String TAG = "NSD_GYMLOG";
     String mExercise = "";
     double mWeight = 0.0;
     int mReps = 0;
