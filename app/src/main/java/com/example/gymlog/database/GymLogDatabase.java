@@ -18,15 +18,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.MainActivity;
+import com.example.gymlog.database.entities.User;
 import com.example.gymlog.database.typeConverters.LocalDateTypeConverter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {GymLog.class}, version= 1, exportSchema = false)
+@Database(entities = {GymLog.class, User.class}, version = 2, exportSchema = false)
 public abstract class GymLogDatabase extends RoomDatabase {
 
+    public static final String USER_TABLE = "user_table";
     private static final String DATABASE_NAME = "GymLog_database";
     public static final String GYM_LOG_TABLE = "gymLogTable";
 
