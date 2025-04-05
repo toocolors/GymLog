@@ -60,9 +60,20 @@ public abstract class GymLogDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             Log.i(MainActivity.TAG, "DATABASE CREATED!");
-            //TODO: add databaseWriteExecutor.execute(() -> {...}
+            databaseWriteExecutor.execute(() -> {
+                UserDAO dao = INSTANCE.userDao();
+                dao.deleteAll();
+                User admin = new User("admin1", "admin1");
+                admin.setAdmin(true);
+                dao.insert(admin);
+
+                User testUser1 = new User("testuser1", "testuser1");
+                dao.insert(testUser1);
+            });
         }
     };
 
     public abstract GymLogDAO gymLogDAO();
+
+    public abstract UserDAO userDao();
 }

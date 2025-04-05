@@ -26,4 +26,7 @@ public interface UserDAO {
 
     @Query("SELECT * FROM " + GymLogDatabase.USER_TABLE + " ORDER BY username")
     List<User> getAllUsers();
+
+    @Query("DELETE FROM " + GymLogDatabase.USER_TABLE)
+    void deleteAll();
 }
