@@ -9,6 +9,7 @@
 package com.example.gymlog;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Add scrolling to logDisplayTextView
+        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
 
         // Wire button
         binding.logButton.setOnClickListener(new View.OnClickListener() {
