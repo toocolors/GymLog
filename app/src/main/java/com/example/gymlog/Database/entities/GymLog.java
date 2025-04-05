@@ -6,7 +6,6 @@
  */
 package com.example.gymlog.Database.entities;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -25,10 +24,15 @@ public class GymLog {
     private LocalDate date;
 
     // Constructor
+    public GymLog(String exercise, double weight, int reps) {
+        this.exercise = exercise;
+        this.weight = weight;
+        this.reps = reps;
+        date = LocalDate.now();
+    }
 
 
     // Methods
-
 
     @Override
     public boolean equals(Object o) {
