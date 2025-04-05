@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loginUser() {
         //TODO: Create login method.
+        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, -1);
     }
 
     /**
