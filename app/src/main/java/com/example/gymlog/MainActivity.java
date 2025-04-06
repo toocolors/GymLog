@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     // STATIC FIELDS
     private static final String MAIN_ACTIVITY_USER_ID = "com.example.gymlog.MAIN_ACTIVITY_USER_ID";
 
+    private static final String SAVED_INSTANCE_STATE_USERID_KEY =
+            "com.example.gymlog.SAVED_INSTANCE_STATE_USERID_KEY";
+
     // SharedPreference Strings
     static final String SHARED_PREFERENCE_USERID_KEY =
             "com.example.gymlog.SHARED_PREFERENCE_USERID_KEY";
@@ -172,9 +175,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempts to get loggedInUserId from the application shared preferences, instance state,
+     * Attempts to get user and user id from the application shared preferences, instance state,
      *      intent extras, and user repository.
      * loggedInUserId is set to LOGGED_OUT by default if no user id is found.
+     * Starts LoginActivity if a user id is found but no valid user.
      */
     private void loginUser(Bundle savedInstanceState) {
         // Get SharedPreferences.
@@ -209,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
             if(this.user != null) {
                 invalidateOptionsMenu();
             } else {
-                logout();
+//                TODO: Verify if this was an issue...
+//                logout();
             }
         });
     }
@@ -229,6 +234,25 @@ public class MainActivity extends AppCompatActivity {
         // Start LoginActivity
         getIntent().putExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
         startActivity(LoginActivity.loginIntentFactory(getApplicationContext()));
+    }
+
+    /**
+     * Called before MainActivity is killed.
+     * Attempts to save user id preference.
+     * @param outState Bundle in which to place your saved state.
+     *
+     */
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save user id preference.
+        outState.putInt(SAVED_INSTANCE_STATE_USERID_KEY, loggedInUserId);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        sharedPrefEditor.putInt(SHARED_PREFERENCE_USERID_KEY, loggedInUserId);
+        sharedPrefEditor.apply();
     }
 
     /**
