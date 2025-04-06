@@ -28,15 +28,33 @@ import java.util.concurrent.Executors;
 @Database(entities = {GymLog.class, User.class}, version = 3, exportSchema = false)
 public abstract class GymLogDatabase extends RoomDatabase {
 
+    // FIELDS
+    // ID for the user table.
     public static final String USER_TABLE = "user_table";
+
+    // ID for the database.
     private static final String DATABASE_NAME = "GymLog_database";
+
+    // ID for the GymLog table.
     public static final String GYM_LOG_TABLE = "gymLogTable";
 
+    // This GymLogDatabase instance.
     public static volatile GymLogDatabase INSTANCE;
+
+    // The number of threads used by the ExecutorService
     private static final int NUMBER_OF_THREADS = 4;
 
+    // The ExecutorService instance.
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
+    // METHODS
+
+    /**
+     * Returns a GymLogDatabase instance.
+     * Creates a new instance only if one doesn't exist.
+     * @param context The application context.
+     * @return A GymLogDatabase instance.
+     */
     static GymLogDatabase getDatabase(final Context context) {
         if(INSTANCE == null) {
             synchronized (GymLogDatabase.class) {
@@ -55,6 +73,11 @@ public abstract class GymLogDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    /**
+     * Adds two default users to the user table.
+     * User 1: username = admin1, password = admin1
+     * User 2: username = testuser1, password = testuser1
+     */
     private static final RoomDatabase.Callback addDefaultValues = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

@@ -22,10 +22,15 @@ import java.util.concurrent.Future;
 
 public class GymLogRepository {
     // Fields
+
+    // Stores the GymLogDAO instance.
     private final GymLogDAO gymLogDAO;
+
+    // Stores the UserDAO instance.
     private final UserDAO userDAO;
     private ArrayList<GymLog> allLogs;
 
+    // Stores the repository instance.
     private static GymLogRepository repository;
 
     // Constructors
@@ -36,6 +41,11 @@ public class GymLogRepository {
         this.allLogs = (ArrayList<GymLog>) this.gymLogDAO.getAllRecords();
     }
 
+    /**
+     * Returns an instance of GymLogRepository.
+     * @param application
+     * @return The repository.
+     */
     // Methods
     public static GymLogRepository getRepository(Application application) {
         Future<GymLogRepository> future = GymLogDatabase.databaseWriteExecutor.submit(
@@ -55,6 +65,10 @@ public class GymLogRepository {
         return null;
     }
 
+    /**
+     * Returns an ArrayList containing all GymLog logs in the repository.
+     * @return An ArrayList of GymLogs.
+     */
     public ArrayList<GymLog> getAllLogs() {
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
                 new Callable<ArrayList<GymLog>>() {
@@ -93,6 +107,11 @@ public class GymLogRepository {
         });
     }
 
+    /**
+     * Returns an ArrayList containing all GymLog logs with the passed in userId.
+     * @param userId Used to determine which GymLog logs to get.
+     * @return The ArrayList of GymLogs.
+     */
     public ArrayList<GymLog> getAllLogsByUserId(int userId) {
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
                 new Callable<ArrayList<GymLog>>() {
