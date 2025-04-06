@@ -30,6 +30,7 @@ import com.example.gymlog.database.entities.User;
 import com.example.gymlog.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -326,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets text of logDisplayTextView to constructed String.
      */
     private void updateDisplay() {
-        ArrayList<GymLog> allLogs = repository.getAllLogs();
+        ArrayList<GymLog>allLogs = repository.getAllLogsByUserId(loggedInUserId);
         if(allLogs.isEmpty()) {
             binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
