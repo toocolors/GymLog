@@ -22,7 +22,6 @@ public class GymLogViewModel extends AndroidViewModel {
 
     private GymLogRepository repository;
 
-//    private final LiveData<List<GymLog>> allLogsById;
 
     // CONSTRUCTOR
 
@@ -33,7 +32,6 @@ public class GymLogViewModel extends AndroidViewModel {
     public GymLogViewModel(Application application) {
         super(application);
         repository = GymLogRepository.getRepository(application);
-//        allLogsById = repository.getAllLogsByUserIdLiveData(userId);
     }
 
     // METHODS
