@@ -22,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,33 +122,14 @@ public class MainActivity extends AppCompatActivity {
         // Store user id in preferences.
         updateSharedPreference();
 
-        //TODO: REMOVE THIS
-        // Add scrolling to logDisplayTextView
-//        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
-
-        // TODO REMOVE THIS
-        // Update display
-//        updateDisplay();
-
         // Wire button
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay();
                 insertGymLogRecord();
-                // TODO: REMOVE THIS
-//                updateDisplay();
             }
         });
-
-        //TODO: REMOVE THIS BLOCK
-//        // Set UpdateDisplay Shortcut
-//        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateDisplay();
-//            }
-//        });
     }
 
     /**
