@@ -10,8 +10,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/logDisplayRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="92dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
         android:padding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
