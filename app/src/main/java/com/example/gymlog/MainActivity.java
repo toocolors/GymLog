@@ -1,6 +1,5 @@
 /**
  * Title: GymLog MainActivity
- *
  * @author Noah deFer
  * Date: 4/5/2025
  * Description: The MainActivity for the GymLog application.
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -34,28 +32,56 @@ import com.example.gymlog.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    // STATIC FIELDS
     private static final String MAIN_ACTIVITY_USER_ID = "com.example.gymlog.MAIN_ACTIVITY_USER_ID";
+
+    // SharedPreference Strings
     static final String SHARED_PREFERENCE_USERID_KEY =
             "com.example.gymlog.SHARED_PREFERENCE_USERID_KEY";
     static final String SHARED_PREFERENCE_USERID_VALUE =
             "com.example.gymlog.SHARED_PREFERENCE_USERID_VALUE";
+
+    // The identifier used for Logcat.
+    public static final String TAG = "NSD_GYMLOG";
+
+    // The default value for loggedInUserId when no user is logged in.
     private static final int LOGGED_OUT = -1;
 
-    // Fields
+    // INSTANCE FIELDS
 
+    // The Binding object for MainActivity.
     private ActivityMainBinding binding;
 
+    // The repository.
     private GymLogRepository repository;
 
-    public static final String TAG = "NSD_GYMLOG";
+    // The String entered in exerciseInputEditText
     String mExercise = "";
+
+    // The double entered in weightInputEditText
     double mWeight = 0.0;
+
+    // The int entered in repInputEditText
     int mReps = 0;
 
-    private int loggedInUserId = -1;
+    // The ID of the logged in user. Defaults to LOGGED_OUT (-1) if no user is logged in.
+    private int loggedInUserId = LOGGED_OUT;
+
+    // The data of the logged in user.
     private User user;
 
+    // Methods
 
+    /**
+     * Called when the activity is starting.
+     * Gets the repository.
+     * Checks if user is logged in, starts the LoginActivity if not.
+     * Sets onClickListeners to logButton and exerciseInputTextEdit.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Handle login
         loginUser();
-        if(loggedInUserId == -1){
+        if(loggedInUserId == LOGGED_OUT){
             Intent intent = LoginActivity.loginIntentFactory(getApplicationContext());
             startActivity(intent);
         }
@@ -97,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Methods
-
     /**
      * Reads values from exercise, weight, and reps edit text fields.
      * Stores those values in mExercise, mWeight, and mReps respectively.
@@ -124,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Inserts a new GymLog into the repository.
+     * Inserts a new GymLog into the repository if mExercise is not empty.
      */
     private void insertGymLogRecord() {
         if(mExercise.isEmpty()) {
@@ -134,12 +158,24 @@ public class MainActivity extends AppCompatActivity {
         repository.insertGymLog(log);
     }
 
+    /**
+     * Intent factory for MainActivity.
+     * Stores the userId entered on the login page.
+     * @param context The application context.
+     * @param userId The userId entered on the login page.
+     * @return The MainActivity Intent.
+     */
     static Intent mainActivityIntentFactory(Context context, int userId) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MAIN_ACTIVITY_USER_ID, userId);
         return intent;
     }
 
+    /**
+     * Attempts to get loggedInUserId from the application shared preferences, intent extras,
+     *      and user repository.
+     * If no user id is found, loggedInUserId is set to LOGGED_OUT.
+     */
     private void loginUser() {
         // Check shared preference for logged in user.
         SharedPreferences sharedPreferences = getApplicationContext()
@@ -156,21 +192,34 @@ public class MainActivity extends AppCompatActivity {
         LiveData<User> userObserver = repository.getUserByUserId(loggedInUserId);
         userObserver.observe(this, user -> {
             if(user != null) {
+                this.user = user;
                 invalidateOptionsMenu();
             }
         });
     }
 
+    /**
+     * Sets the application shared preference for the logged in user to LOGGED_OUT.
+     * Starts the LoginActivity.
+     */
     private void logout() {
+        // Set user preference to LOGGED_OUT.
         SharedPreferences sharedPreferences = getApplicationContext()
                 .getSharedPreferences(SHARED_PREFERENCE_USERID_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
         sharedPrefEditor.putInt(SHARED_PREFERENCE_USERID_KEY, LOGGED_OUT);
         sharedPrefEditor.apply();
+
+        // Start LoginActivity
         getIntent().putExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
         startActivity(LoginActivity.loginIntentFactory(getApplicationContext()));
     }
 
+    /**
+     * Called when a menu is created.
+     * @param menu The options menu in which you place your items.
+     * @return ???
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -178,6 +227,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Called before the menu is displayed.
+     * Displays the logoutMenuItem, and assigns an onClickListener to it.
+     * @param menu The options menu as last shown or first initialized by
+     *             onCreateOptionsMenu().
+     * @return true = menu displayed, false = menu not displayed.
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.logoutMenuItem);
@@ -196,6 +252,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Called when logoutMenuItem is clicked.
+     * Displays an alert message to the user.
+     * User clicks 'Logout': logout() is called.
+     * User clicks 'Cancel': alert message is dismissed.
+     */
     private void showLogoutDialog() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
         final AlertDialog alertDialog = alertBuilder.create();
