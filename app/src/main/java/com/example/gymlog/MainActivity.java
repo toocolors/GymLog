@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         repository = GymLogRepository.getRepository(getApplication());
 
         // Handle login
-        loginUser();
+        loginUser(savedInstanceState);
         if(loggedInUserId == LOGGED_OUT){
             Intent intent = LoginActivity.loginIntentFactory(getApplicationContext());
             startActivity(intent);
@@ -172,28 +172,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempts to get loggedInUserId from the application shared preferences, intent extras,
-     *      and user repository.
-     * If no user id is found, loggedInUserId is set to LOGGED_OUT.
+     * Attempts to get loggedInUserId from the application shared preferences, instance state,
+     *      intent extras, and user repository.
+     * loggedInUserId is set to LOGGED_OUT by default if no user id is found.
      */
-    private void loginUser() {
-        // Check shared preference for logged in user.
+    private void loginUser(Bundle savedInstanceState) {
+        // Get SharedPreferences.
         SharedPreferences sharedPreferences = getApplicationContext()
                 .getSharedPreferences(SHARED_PREFERENCE_USERID_KEY, Context.MODE_PRIVATE);
-        loggedInUserId = sharedPreferences.getInt(SHARED_PREFERENCE_USERID_VALUE, LOGGED_OUT);
-        if(loggedInUserId != LOGGED_OUT) {
-            return;
+
+        // Check shared preference for logged in user.
+        if(sharedPreferences.contains(SHARED_PREFERENCE_USERID_VALUE)) {
+            loggedInUserId = sharedPreferences.getInt(SHARED_PREFERENCE_USERID_VALUE, LOGGED_OUT);
         }
-        // Check intent for logged in user.
-        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
+
+        // Check instance state for user id.
+        if(loggedInUserId == LOGGED_OUT && savedInstanceState != null
+                && savedInstanceState.containsKey(SHARED_PREFERENCE_USERID_KEY)) {
+            loggedInUserId = savedInstanceState.getInt(SHARED_PREFERENCE_USERID_KEY, LOGGED_OUT);
+        }
+
+        // Check intent for user id.
+        if(loggedInUserId == LOGGED_OUT) {
+            loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
+        }
+
+        // Check if loggedUserId is -1.
         if(loggedInUserId == LOGGED_OUT) {
             return;
         }
+
+        // Check repository for logged in user.
         LiveData<User> userObserver = repository.getUserByUserId(loggedInUserId);
         userObserver.observe(this, user -> {
-            if(user != null) {
-                this.user = user;
+            this.user = user;
+            if(this.user != null) {
                 invalidateOptionsMenu();
+            } else {
+                logout();
             }
         });
     }
