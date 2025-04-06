@@ -62,15 +62,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get repository instance, BEFORE calling loginUser!
+        repository = GymLogRepository.getRepository(getApplication());
+
         // Handle login
         loginUser();
         if(loggedInUserId == -1){
             Intent intent = LoginActivity.loginIntentFactory(getApplicationContext());
             startActivity(intent);
         }
-
-        // Get repository instance
-        repository = GymLogRepository.getRepository(getApplication());
 
         // Add scrolling to logDisplayTextView
         binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
